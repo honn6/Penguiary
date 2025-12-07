@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PenguiDiary</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,sans-serif;background:linear-gradient(135deg,#f0fdf4,#dbeafe);min-height:100vh;color:#111}body.dark{background:#111;color:#f9fafb}.container{max-width:56rem;margin:0 auto;padding:1rem 1rem 5rem}
+        #splash{position:fixed;inset:0;background:linear-gradient(135deg,#4ade80,#14b8a6);display:flex;align-items:center;justify-content:center;z-index:999}#splash.hide{display:none}.splash-box{text-align:center;animation:fadeIn .8s}.dino{width:120px;height:120px;margin:0 auto 2rem;animation:bounce 2s infinite}h1{font-size:2.5rem;color:#fff;text-shadow:2px 2px 4px rgba(0,0,0,.1);margin-bottom:.5rem}
+        @keyframes fadeIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}.logo{width:2.5rem;height:2.5rem;background:linear-gradient(135deg,#4ade80,#10b981);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.1)}.title{font-size:1.5rem;font-weight:700;margin-left:.75rem}
+        .card{background:#fff;border:1px solid #e5e7eb;border-radius:.75rem;padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 3px rgba(0,0,0,.1)}body.dark .card{background:#1f2937;border-color:#374151}
+        input,textarea,select{width:100%;padding:.75rem;border:1px solid #e5e7eb;border-radius:.5rem;font-size:1rem;font-family:inherit;background:#fff;color:#111}body.dark input,body.dark textarea,body.dark select{background:#1f2937;border-color:#374151;color:#f9fafb}textarea{height:20rem;resize:vertical}
+        .btn{padding:.5rem 1rem;border:none;border-radius:.5rem;cursor:pointer;font-weight:600;transition:.2s}.btn-primary{background:linear-gradient(135deg,#22c55e,#10b981);color:#fff;width:100%;padding:.75rem;margin-top:1rem}.btn-sm{padding:.5rem;background:transparent;color:#6b7280}.btn-sm:hover{background:#f3f4f6}body.dark .btn-sm:hover{background:#374151}
+        .fab{position:fixed;bottom:1.5rem;right:1.5rem;width:4rem;height:4rem;background:linear-gradient(135deg,#22c55e,#10b981);border:none;border-radius:50%;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.3);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:100}.fab:active{transform:scale(.95)}
+        .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:1rem;z-index:1000}.modal.show{display:flex}.modal-box{background:#fff;border-radius:1rem;padding:1.5rem;max-width:42rem;width:100%;max-height:90vh;overflow-y:auto}body.dark .modal-box{background:#1f2937}
+        .flex{display:flex;gap:.75rem;align-items:center}.flex-between{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+        .entry-title{font-size:1.125rem;font-weight:600;margin-bottom:.5rem}.entry-date{font-size:.75rem;color:#6b7280;margin-bottom:.75rem}.entry-content{color:#6b7280;line-height:1.6;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+        .settings-group{margin-bottom:1.5rem}.settings-label{font-weight:600;margin-bottom:.5rem;display:block}.settings-btns{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:.5rem}.settings-btn{padding:.75rem;background:#fff;border:1px solid #e5e7eb;border-radius:.5rem;cursor:pointer;text-align:center;transition:.2s}body.dark .settings-btn{background:#1f2937;border-color:#374151}.settings-btn.active{background:linear-gradient(135deg,#22c55e,#10b981);color:#fff;border-color:#22c55e}
+        svg{width:1.5rem;height:1.5rem;stroke:currentColor;fill:none;stroke-width:2}.icon-sm{width:1rem;height:1rem}
+        body.fs-sm{font-size:14px}body.fs-lg{font-size:18px}body.ff-serif{font-family:Georgia,serif}body.ff-mono{font-family:'Courier New',monospace}
+    </style>
+</head>
+<body class="fs-md">
+    <div id="splash">
+        <div class="splash-box">
+            <svg class="dino" viewBox="0 0 120 120">
+                <ellipse cx="60" cy="70" rx="35" ry="30" fill="#4ade80" stroke="#22c55e" stroke-width="3"/>
+                <circle cx="60" cy="40" r="25" fill="#4ade80" stroke="#22c55e" stroke-width="3"/>
+                <circle cx="52" cy="35" r="4" fill="#1f2937"/><circle cx="68" cy="35" r="4" fill="#1f2937"/>
+                <circle cx="53" cy="34" r="2" fill="#fff"/><circle cx="69" cy="34" r="2" fill="#fff"/>
+                <path d="M50 45Q60 50 70 45" stroke="#22c55e" stroke-width="2.5" fill="none"/>
+                <path d="M40 55L35 45 38 55M48 52L45 42 48 52M56 50L55 40 57 50M64 50L65 40 66 50M72 52L75 42 74 52M80 55L85 45 82 55" fill="#22c55e"/>
+                <rect x="45" y="95" width="8" height="15" rx="4" fill="#4ade80" stroke="#22c55e" stroke-width="2"/>
+                <rect x="67" y="95" width="8" height="15" rx="4" fill="#4ade80" stroke="#22c55e" stroke-width="2"/>
+                <ellipse cx="35" cy="65" rx="8" ry="12" fill="#4ade80" stroke="#22c55e" stroke-width="2"/>
+                <ellipse cx="85" cy="65" rx="8" ry="12" fill="#4ade80" stroke="#22c55e" stroke-width="2"/>
+            </svg>
+            <h1 id="st">Welcome Pengui</h1>
+            <p style="color:rgba(255,255,255,.8)">PenguiDiary</p>
+        </div>
+    </div>
+
+    <div id="app" style="display:none">
+        <div class="container">
+            <div class="header">
+                <div class="flex">
+                    <div class="logo">
+                        <svg viewBox="0 0 24 24" style="stroke:#fff">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="title">PenguiDiary</div>
+                        <div style="font-size:.75rem;opacity:.6" id="sub">Günlüğüm</div>
+                    </div>
+                </div>
+                <button class="btn-sm" onclick="showSettings()">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6"/></svg>
+                </button>
+            </div>
+
+            <div class="card">
+                <input id="search" placeholder="Ara..." oninput="render()">
+            </div>
+
+            <div id="list"></div>
+
+            <button class="fab" onclick="openEdit()">
+                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-box">
+            <div class="flex-between">
+                <h2 id="modalTitle">Yeni Kayıt</h2>
+                <button class="btn-sm" onclick="closeEdit()">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <input id="etitle" placeholder="Başlık...">
+            <textarea id="econtent" placeholder="Bugün neler oldu?"></textarea>
+            <button class="btn-primary" onclick="save()">Kaydet</button>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-box">
+            <div class="flex-between">
+                <h2>Ayarlar</h2>
+                <button class="btn-sm" onclick="closeSettings()">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="settings-group">
+                <label class="settings-label">Tema</label>
+                <div class="settings-btns">
+                    <button class="settings-btn" id="lt" onclick="setTheme('light')">Açık</button>
+                    <button class="settings-btn" id="dt" onclick="setTheme('dark')">Koyu</button>
+                </div>
+            </div>
+            <div class="settings-group">
+                <label class="settings-label">Yazı Boyutu</label>
+                <div class="settings-btns">
+                    <button class="settings-btn" id="sm" onclick="setSize('sm')">Küçük</button>
+                    <button class="settings-btn" id="md" onclick="setSize('md')">Orta</button>
+                    <button class="settings-btn" id="lg" onclick="setSize('lg')">Büyük</button>
+                </div>
+            </div>
+            <div class="settings-group">
+                <label class="settings-label">Yazı Tipi</label>
+                <div class="settings-btns">
+                    <button class="settings-btn" id="sans" onclick="setFont('sans')">Sans</button>
+                    <button class="settings-btn" id="serif" onclick="setFont('serif')">Serif</button>
+                    <button class="settings-btn" id="mono" onclick="setFont('mono')">Mono</button>
+                </div>
+            </div>
+            <div class="settings-group">
+                <label class="settings-label">Dil</label>
+                <select id="lang" onchange="setLang(this.value)">
+                    <option value="tr">Türkçe</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let data=[];let cur=null;let lang='tr';let theme='light';let size='md';let font='sans';
+        const t={tr:{welcome:'Welcome Pengui',sub:'Günlüğüm',search:'Ara...',new:'Yeni Kayıt',edit:'Düzenle',save:'Kaydet',del:'Sil'},en:{welcome:'Welcome Pengui',sub:'My Diary',search:'Search...',new:'New Entry',edit:'Edit',save:'Save',del:'Delete'}};
+        
+        window.onload=()=>{
+            loadData();
+            setTimeout(()=>{document.getElementById('splash').classList.add('hide');document.getElementById('app').style.display='block'},2500);
+        };
+
+        function loadData(){
+            const s=localStorage.getItem('pd');
+            if(s)data=JSON.parse(s);
+            theme=localStorage.getItem('theme')||'light';
+            size=localStorage.getItem('size')||'md';
+            font=localStorage.getItem('font')||'sans';
+            lang=localStorage.getItem('lang')||'tr';
+            applyTheme();applySize();applyFont();updateLang();render();
+        }
+
+        function render(){
+            const q=document.getElementById('search').value.toLowerCase();
+            const f=data.filter(e=>e.title.toLowerCase().includes(q)||e.content.toLowerCase().includes(q));
+            const l=document.getElementById('list');
+            if(f.length===0){
+                l.innerHTML='<div class="card" style="text-align:center;padding:3rem;opacity:.5">Henüz kayıt yok</div>';
+            }else{
+                l.innerHTML=f.map(e=>`
+                    <div class="card">
+                        <div class="flex-between">
+                            <div style="flex:1">
+                                <div class="entry-title">${e.title}</div>
+                                <div class="entry-date">${new Date(e.date).toLocaleDateString(lang,{year:'numeric',month:'long',day:'numeric'})}</div>
+                            </div>
+                            <div class="flex">
+                                <button class="btn-sm" onclick="edit(${e.id})">
+                                    <svg viewBox="0 0 24 24"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                                </button>
+                                <button class="btn-sm" onclick="del(${e.id})">
+                                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="entry-content">${e.content}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function openEdit(){cur=null;document.getElementById('etitle').value='';document.getElementById('econtent').value='';document.getElementById('modalTitle').textContent=t[lang].new;document.getElementById('editModal').classList.add('show')}
+        function closeEdit(){document.getElementById('editModal').classList.remove('show')}
+        function edit(id){cur=data.find(e=>e.id===id);if(cur){document.getElementById('etitle').value=cur.title;document.getElementById('econtent').value=cur.content;document.getElementById('modalTitle').textContent=t[lang].edit;document.getElementById('editModal').classList.add('show')}}
+        
+        function save(){
+            const title=document.getElementById('etitle').value.trim();
+            const content=document.getElementById('econtent').value.trim();
+            if(!title&&!content)return;
+            if(cur){cur.title=title||'Untitled';cur.content=content;cur.date=new Date().toISOString()}
+            else{data.unshift({id:Date.now(),title:title||'Untitled',content:content,date:new Date().toISOString()})}
+            localStorage.setItem('pd',JSON.stringify(data));
+            closeEdit();render();
+        }
+
+        function del(id){if(confirm(t[lang].del+'?')){data=data.filter(e=>e.id!==id);localStorage.setItem('pd',JSON.stringify(data));render()}}
+        
+        function showSettings(){document.getElementById('settingsModal').classList.add('show');updateSettings()}
+        function closeSettings(){document.getElementById('settingsModal').classList.remove('show')}
+        
+        function updateSettings(){
+            document.querySelectorAll('.settings-btn').forEach(b=>b.classList.remove('active'));
+            document.getElementById(theme==='light'?'lt':'dt').classList.add('active');
+            document.getElementById(size).classList.add('active');
+            document.getElementById(font).classList.add('active');
+            document.getElementById('lang').value=lang;
+        }
+
+        function setTheme(v){theme=v;localStorage.setItem('theme',v);applyTheme();updateSettings()}
+        function applyTheme(){document.body.classList.toggle('dark',theme==='dark')}
+        
+        function setSize(v){size=v;localStorage.setItem('size',v);applySize();updateSettings()}
+        function applySize(){document.body.className=document.body.className.replace(/fs-\w+/,'');document.body.classList.add('fs-'+size)}
+        
+        function setFont(v){font=v;localStorage.setItem('font',v);applyFont();updateSettings()}
+        function applyFont(){document.body.className=document.body.className.replace(/ff-\w+/,'');if(font!=='sans')document.body.classList.add('ff-'+font)}
+        
+        function setLang(v){lang=v;localStorage.setItem('lang',v);updateLang()}
+        function updateLang(){document.getElementById('st').textContent=t[lang].welcome;document.getElementById('sub').textContent=t[lang].sub;document.getElementById('search').placeholder=t[lang].search;render()}
+    </script>
+</body>
+</html>
